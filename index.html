@@ -1,0 +1,59 @@
+<!-- https://davidshimjs.github.io/qrcodejs/ -> PROJETO ORIGINAL -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+<title>Cross-Browser QRCode generator for Javascript</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="qrcode.js"></script>
+</head>
+<body>
+<input id="text" type="text" value="https://cesla.ind.br/" style="width:80%" /><br />
+<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+
+<!-- QR codes use Reed–Solomon error correction over the finite field {\displaystyle \mathbb {F} _{256}}{\displaystyle \mathbb {F} _{256}}, the elements of which are encoded as bytes of 8 bits; the byte {\displaystyle b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}}{\displaystyle b_{7}b_{6}b_{5}b_{4}b_{3}b_{2}b_{1}b_{0}} with a standard numerical value {\displaystyle \textstyle \sum _{i=0}^{7}b_{i}2^{i}}{\displaystyle \textstyle \sum _{i=0}^{7}b_{i}2^{i}} encodes the field element {\displaystyle \textstyle \sum _{i=0}^{7}b_{i}\alpha ^{i}}{\displaystyle \textstyle \sum _{i=0}^{7}b_{i}\alpha ^{i}} where {\displaystyle \alpha \in \mathbb {F} _{256}}{\displaystyle \alpha \in \mathbb {F} _{256}} is taken to be a primitive element satisfying {\displaystyle \alpha ^{8}+\alpha ^{4}+\alpha ^{3}+\alpha ^{2}+1=0}{\displaystyle \alpha ^{8}+\alpha ^{4}+\alpha ^{3}+\alpha ^{2}+1=0}. The Reed–Solomon code uses one of 37 different polynomials over {\displaystyle \mathbb {F} _{256}}{\displaystyle \mathbb {F} _{256}}, with degrees ranging from 7 to 68, depending on how many error correction bytes the code adds. It is implied by the form of Reed–Solomon used (systematic BCH view) that these polynomials are all on the form {\textstyle \prod _{i=0}^{n-1}(x-\alpha ^{i})}{\textstyle \prod _{i=0}^{n-1}(x-\alpha ^{i})}, however the rules for selecting the degree {\displaystyle n}n are specific to the QR standard.
+
+When discussing the Reed–Solomon code phase there is some risk for confusion, in that the QR ISO/IEC standard uses the term codeword for the elements of {\displaystyle \mathbb {F} _{256}}{\displaystyle \mathbb {F} _{256}}, which with respect to the Reed–Solomon code are symbols, whereas it uses the term block for what with respect to the Reed–Solomon code are the codewords. The number of data versus error correction bytes within each block depends on (i) the version (side length) of the QR symbol and (ii) the error correction level, of which there are four. The higher the error correction level, the less storage capacity. The following table lists the approximate error correction capability at each of the four levels:
+
+Level L (Low)	7% of data bytes can be restored.
+Level M (Medium)	15% of data bytes can be restored.
+Level Q (Quartile)[71]	25% of data bytes can be restored.
+Level H (High)	30% of data bytes can be restored. -->
+
+
+<script type="text/javascript">
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+	width: 500,
+    height: 500,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.H
+});
+
+function makeCode () {		
+	var elText = document.getElementById("text");
+	
+	if (!elText.value) {
+		alert("Input a text");
+		elText.focus();
+		return;
+	}
+	
+	qrcode.makeCode(elText.value);
+}
+
+makeCode();
+
+$("#text").
+	on("blur", function () {
+		makeCode();
+	}).
+	on("keydown", function (e) {
+		if (e.keyCode == 13) {
+			makeCode();
+		}
+	});
+</script>
+</body>
